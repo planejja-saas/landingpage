@@ -4,6 +4,9 @@ export default function Navbar() {
   const font = `'Inter', sans-serif`;
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState(null);
+  const [isLoginHovered, setLoginHovered] = useState(false);
+  const [isSignupHovered, setSignupHovered] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,6 +64,9 @@ export default function Navbar() {
       transition: 'color 0.2s',
       cursor: 'pointer',
     },
+    linkHover: {
+      color: '#000000',
+    },
     actions: {
       display: 'flex',
       gap: '12px',
@@ -75,11 +81,15 @@ export default function Navbar() {
       border: '1px solid #FA8F24',
       color: '#374151',
       fontSize: '16px',
-      fontWeight: 500,
+      fontWeight: 600,
       cursor: 'pointer',
       padding: '8px 16px',
       borderRadius: '6px',
       transition: 'color 0.2s, background 0.2s',
+    },
+    loginHover: {
+      backgroundColor: '#FA8F24',
+      color: '#1C140D',
     },
     signup: {
       backgroundColor: '#FA8F24',
@@ -91,6 +101,9 @@ export default function Navbar() {
       fontSize: '16px',
       cursor: 'pointer',
       transition: 'transform 0.2s',
+    },
+    signupHover: {
+      transform: 'scale(1.05)',
     },
     icon: {
       width: '16px',
@@ -154,14 +167,30 @@ export default function Navbar() {
           <>
             <nav style={styles.navLinks}>
               {links.map((link) => (
-                <a key={link.id} href={`#${link.id}`} style={styles.link}>
+                <a
+                  key={link.id}
+                  href={`#${link.id}`}
+                  style={{
+                    ...styles.link,
+                    ...(hoveredLink === link.id ? styles.linkHover : {}),
+                  }}
+                  onMouseEnter={() => setHoveredLink(link.id)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                >
                   {link.label}
                 </a>
               ))}
             </nav>
 
             <div style={styles.actions}>
-              <button style={styles.login}>
+              <button
+                style={{
+                  ...styles.login,
+                  ...(isLoginHovered ? styles.loginHover : {}),
+                }}
+                onMouseEnter={() => setLoginHovered(true)}
+                onMouseLeave={() => setLoginHovered(false)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -179,7 +208,16 @@ export default function Navbar() {
                 Entrar
               </button>
 
-              <button style={styles.signup}>Cadastrar</button>
+              <button
+                style={{
+                  ...styles.signup,
+                  ...(isSignupHovered ? styles.signupHover : {}),
+                }}
+                onMouseEnter={() => setSignupHovered(true)}
+                onMouseLeave={() => setSignupHovered(false)}
+              >
+                Cadastrar
+              </button>
             </div>
           </>
         )}
